@@ -239,6 +239,7 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
 .form-msg{display:none;border-radius:12px;padding:14px 16px;font-size:15px}
 .form-msg.ok{display:block;background:rgba(47,158,91,.15);color:#8fe0ad;border:1px solid rgba(47,158,91,.4)}
 .form-msg.err{display:block;background:rgba(200,67,46,.15);color:#f3a596;border:1px solid rgba(200,67,46,.4)}
+.err-code{display:block;margin-top:8px;font-size:11px;opacity:.6;word-break:break-word}
 .hp{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
 
 /* footer */
@@ -697,7 +698,8 @@ const CONFIG = {
   phone: "+7 985 885-44-52",          // ваш номер телефона (как показывать на сайте)
   telegram: "ilkjeli",                // ваш ник в Telegram БЕЗ @
   whatsapp: "79858854452",            // номер для WhatsApp только цифрами, в формате 7XXXXXXXXXX
-  web3formsKey: "86e56965-d70b-4483-81ac-c46765bba4e4",                   // ключ доступа с https://web3forms.com (бесплатно) — заявки придут на почту
+  web3formsKey: "86e56965-d70b-4483-81ac-c46765bba4e4",
+  googleScriptUrl: "https://script.google.com/macros/s/AKfycbyTDUfgFjdw2mxIkwFnX-8VTEPsDd2MCDsbzE5Ezx75QT3ER9YG4B6vHc7EdGlB4rXD/exec",                // резервный канал: ссылка веб-приложения Google Apps Script (…/exec)                   // ключ доступа с https://web3forms.com (бесплатно) — заявки придут на почту
   avito: "https://www.avito.ru/moskovskaya_oblast_moskovskiy/predlozheniya_uslug/master_na_chas._sborka_mebeli._i_lyubye_raboty_8328963584"
 };
 /* ===================================================================== */
@@ -902,6 +904,13 @@ function buildText(data) {
     `Задача: ${data.message || "—"}\nСвязаться: ${data.contact_via}`;
 }
 
+function fetchWithTimeout(url, opts, ms) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, {...opts, signal: ctrl.signal}).finally(() => clearTimeout(timer));
+}
+const errText = err => err && err.name === "AbortError" ? "timeout" : String(err && err.message || err).slice(0, 80);
+
 async function onSubmit(e) {
   e.preventDefault();
   const f = e.target;
@@ -918,9 +927,12 @@ async function onSubmit(e) {
   const btn = $("button[type=submit]", f);
   const label = btn.textContent;
   btn.disabled = true; btn.textContent = "Отправляю…";
-  try {
-    if (CONFIG.web3formsKey) {
-      const res = await fetch("https://api.web3forms.com/submit", {
+  const errors = [];
+  let sent = false;
+  // 1) основной канал — Web3Forms (письмо на почту)
+  if (CONFIG.web3formsKey) {
+    try {
+      const res = await fetchWithTimeout("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {"Content-Type":"application/json", "Accept":"application/json"},
         body: JSON.stringify({
@@ -930,25 +942,38 @@ async function onSubmit(e) {
           "Имя": data.name || "—", "Телефон": data.phone, "Услуга": data.service,
           "Описание": data.message || "—", "Способ связи": data.contact_via
         })
-      });
-      const json = await res.json();
-      if (!json.success) throw new Error(json.message || "send failed");
-      showMsg(f, "ok", "✅ Заявка отправлена! Я свяжусь с вами в ближайшее время.");
-      f.reset();
-    } else {
-      throw new Error("no key");
-    }
-  } catch (err) {
-    // запасной вариант: отправить заявку напрямую в мессенджер
+      }, 9000);
+      const json = await res.json().catch(() => ({}));
+      if (!json.success) throw new Error("HTTP " + res.status + (json.message ? " " + json.message : ""));
+      sent = true;
+    } catch (err) { errors.push("W3F: " + errText(err)); }
+  }
+  // 2) резервный канал — Google Apps Script (таблица + письмо)
+  if (!sent && CONFIG.googleScriptUrl) {
+    try {
+      const res = await fetchWithTimeout(CONFIG.googleScriptUrl, {
+        method: "POST",
+        body: new URLSearchParams(data)   // «простой» запрос — без предварительной CORS-проверки
+      }, 12000);
+      const json = await res.json().catch(() => ({}));
+      if (!json.success) throw new Error("HTTP " + res.status + (json.message ? " " + json.message : ""));
+      sent = true;
+    } catch (err) { errors.push("G: " + errText(err)); }
+  }
+  if (sent) {
+    showMsg(f, "ok", "✅ Заявка отправлена! Я свяжусь с вами в ближайшее время.");
+    f.reset();
+  } else {
+    // 3) последний вариант: отправить заявку напрямую в мессенджер
     const text = encodeURIComponent(buildText(data));
     const links = [];
     if (CONFIG.whatsapp) links.push(`<a href="https://wa.me/${CONFIG.whatsapp}?text=${text}" target="_blank" rel="noopener"><b>WhatsApp</b></a>`);
     if (CONFIG.telegram) links.push(`<a href="https://t.me/${CONFIG.telegram}?text=${text}" target="_blank" rel="noopener"><b>Telegram</b></a>`);
     links.push(`<a href="tel:${phoneDigits}"><b>позвоните: ${esc(CONFIG.phone)}</b></a>`);
-    showMsg(f, "err", "Не получилось отправить заявку автоматически. Отправьте её в один клик: " + links.join(" · "));
-  } finally {
-    btn.disabled = false; btn.textContent = label;
+    showMsg(f, "err", "Не получилось отправить заявку автоматически. Отправьте её в один клик: " + links.join(" · ") +
+      `<small class="err-code">Код ошибки: ${esc(errors.join("; ") || "нет каналов")}</small>`);
   }
+  btn.disabled = false; btn.textContent = label;
 }
 [pageForm, modalForm].forEach(f => f.addEventListener("submit", onSubmit));
 
