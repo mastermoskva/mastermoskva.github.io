@@ -1,0 +1,26 @@
+{
+  "categories": {"mebel": "Мебель", "vannaya": "Ванная", "montazh": "Монтаж и электрика"},
+  "items": [
+    {"file": "works/mebel/mebel-001.jpg", "thumb": "thumbs/mebel/mebel-001.jpg", "cat": "mebel", "title": "Шкаф двухстворчатый", "note": "Сборка, ш95 × в210", "w": 480, "h": 640},
+    {"file": "works/mebel/mebel-002.jpg", "thumb": "thumbs/mebel/mebel-002.jpg", "cat": "mebel", "title": "Стеллаж со столом", "note": "Сборка и установка к стене", "w": 640, "h": 480},
+    {"file": "works/montazh/montazh-001.jpg", "thumb": "thumbs/montazh/montazh-001.jpg", "cat": "montazh", "title": "Зеркало с подсветкой", "note": "Монтаж и подключение", "w": 378, "h": 640},
+    {"file": "works/mebel/mebel-003.jpg", "thumb": "thumbs/mebel/mebel-003.jpg", "cat": "mebel", "title": "Шкаф с ящиками", "note": "Сборка, навеска фасадов", "w": 480, "h": 640},
+    {"file": "works/mebel/mebel-004.jpg", "thumb": "thumbs/mebel/mebel-004.jpg", "cat": "mebel", "title": "Кровать и люстра", "note": "Сборка кровати, монтаж светильника", "w": 480, "h": 640},
+    {"file": "works/vannaya/vannaya-001.jpg", "thumb": "thumbs/vannaya/vannaya-001.jpg", "cat": "vannaya", "title": "Зеркало, полотенцесушитель и светильник", "note": "Монтаж и подключение", "w": 480, "h": 640},
+    {"file": "works/mebel/mebel-005.jpg", "thumb": "thumbs/mebel/mebel-005.jpg", "cat": "mebel", "title": "Комод", "note": "Сборка, регулировка ящиков", "w": 640, "h": 570},
+    {"file": "works/mebel/mebel-006.jpg", "thumb": "thumbs/mebel/mebel-006.jpg", "cat": "mebel", "title": "Шкаф-пенал", "note": "Сборка и крепление к стене", "w": 480, "h": 640},
+    {"file": "works/vannaya/vannaya-002.jpg", "thumb": "thumbs/vannaya/vannaya-002.jpg", "cat": "vannaya", "title": "Душевая стойка", "note": "Монтаж", "w": 378, "h": 640},
+    {"file": "works/mebel/mebel-007.jpg", "thumb": "thumbs/mebel/mebel-007.jpg", "cat": "mebel", "title": "Письменный стол", "note": "Сборка", "w": 640, "h": 480},
+    {"file": "works/mebel/mebel-008.jpg", "thumb": "thumbs/mebel/mebel-008.jpg", "cat": "mebel", "title": "Шкаф с антресолями", "note": "Сборка, 4 двери, ручки-профили", "w": 480, "h": 640},
+    {"file": "works/vannaya/vannaya-003.jpg", "thumb": "thumbs/vannaya/vannaya-003.jpg", "cat": "vannaya", "title": "Полотенцесушитель и зеркало", "note": "Монтаж и подключение", "w": 640, "h": 480},
+    {"file": "works/mebel/mebel-009.jpg", "thumb": "thumbs/mebel/mebel-009.jpg", "cat": "mebel", "title": "Стеллаж на колёсах", "note": "Сборка", "w": 480, "h": 640},
+    {"file": "works/mebel/mebel-010.jpg", "thumb": "thumbs/mebel/mebel-010.jpg", "cat": "mebel", "title": "Шкаф-пенал двойной", "note": "Сборка", "w": 480, "h": 640},
+    {"file": "works/mebel/mebel-011.jpg", "thumb": "thumbs/mebel/mebel-011.jpg", "cat": "mebel", "title": "Кровать", "note": "Сборка", "w": 480, "h": 640},
+    {"file": "works/montazh/montazh-002.jpg", "thumb": "thumbs/montazh/montazh-002.jpg", "cat": "montazh", "title": "Точечный свет", "note": "Монтаж светильников", "w": 480, "h": 640},
+    {"file": "works/vannaya/vannaya-004.jpg", "thumb": "thumbs/vannaya/vannaya-004.jpg", "cat": "vannaya", "title": "Душевая система", "note": "Монтаж", "w": 480, "h": 640},
+    {"file": "works/mebel/mebel-012.jpg", "thumb": "thumbs/mebel/mebel-012.jpg", "cat": "mebel", "title": "Шкаф-пенал", "note": "Сборка", "w": 480, "h": 640},
+    {"file": "works/montazh/montazh-003.jpg", "thumb": "thumbs/montazh/montazh-003.jpg", "cat": "montazh", "title": "Карниз для штор", "note": "Установка", "w": 640, "h": 360},
+    {"file": "works/montazh/montazh-004.jpg", "thumb": "thumbs/montazh/montazh-004.jpg", "cat": "montazh", "title": "Шкаф и кронштейн ТВ", "note": "Сборка, навеска телевизора", "w": 480, "h": 640},
+    {"file": "works/mebel/mebel-013.jpg", "thumb": "thumbs/mebel/mebel-013.jpg", "cat": "mebel", "title": "Наполнение шкафа", "note": "Полки, штанга, антресоль", "w": 480, "h": 640}
+  ]
+}
