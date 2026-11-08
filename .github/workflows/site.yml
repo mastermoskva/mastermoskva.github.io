@@ -1,0 +1,61 @@
+# Автоматическая обработка фото галереи и публикация сайта.
+# Запускается сама при каждом изменении в репозитории (загрузили фото, обновили index.html и т.д.).
+name: Галерея и публикация сайта
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Скачать файлы сайта
+        uses: actions/checkout@v4
+
+      - name: Установить Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Установить обработчик фото
+        run: pip install pillow pillow-heif
+
+      - name: Обработать новые фото
+        run: python tools/gallery.py
+
+      - name: Сохранить обработанные фото в репозиторий
+        run: |
+          git config user.name "gallery-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A works thumbs works.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Галерея: обработаны новые фото"
+            git pull --rebase
+            git push
+          fi
+
+      - name: Подготовить публикацию
+        uses: actions/configure-pages@v5
+
+      - name: Упаковать сайт
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Опубликовать сайт
+        id: deploy
+        uses: actions/deploy-pages@v4
