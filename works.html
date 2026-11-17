@@ -387,6 +387,7 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
   .mbar .btn{flex:1;padding:13px 10px;font-size:15px}
   .mbar .call{flex:0 0 50px;padding:0;background:var(--dark-2);color:#fff}
 }
+.consent-check{display:flex;gap:10px;align-items:flex-start;font-size:14px}.consent-check input{flex:none;margin-top:4px;accent-color:var(--accent)}.consent-check a{text-decoration:underline}
 
 /* страница всех работ */
 .wp-hero{padding:40px 0 28px}
@@ -462,7 +463,7 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
 <footer class="ftr">
   <div class="wrap">
     <span>© <span id="year"></span> Мастер Илья — мастер на час, Москва и Московская область</span>
-    <span><a href="index.html">Главная</a> · <a href="#top">Наверх ↑</a></span>
+    <span><a href="privacy.html">Политика конфиденциальности</a> · <a href="index.html">Главная</a> · <a href="#top">Наверх ↑</a></span>
   </div>
 </footer>
 
@@ -479,8 +480,7 @@ const CONFIG = {
   telegram: "ilkjeli",                // ваш ник в Telegram БЕЗ @
   whatsapp: "79858854452",            // номер для WhatsApp только цифрами, в формате 7XXXXXXXXXX
   max: "https://max.ru/u/f9LHodD0cOIPsYmqnmqoWIl6Abimpl-M4bB_tGXmqWBoUazFhynAr_DspQg",                            // ссылка на профиль в MAX: Профиль → QR-код → «Скопировать ссылку» (вида https://max.ru/u/...)
-  web3formsKey: "86e56965-d70b-4483-81ac-c46765bba4e4",  // ключ Web3Forms — основной канал заявок (на почту)
-  googleScriptUrl: "https://script.google.com/macros/s/AKfycbyTDUfgFjdw2mxIkwFnX-8VTEPsDd2MCDsbzE5Ezx75QT3ER9YG4B6vHc7EdGlB4rXD/exec",  // резервный канал: Google Apps Script
+  googleScriptUrl: "https://script.google.com/macros/s/AKfycbyTDUfgFjdw2mxIkwFnX-8VTEPsDd2MCDsbzE5Ezx75QT3ER9YG4B6vHc7EdGlB4rXD/exec",  // публичный адрес обработчика заявок
   avito: "https://www.avito.ru/moskovskaya_oblast_moskovskiy/predlozheniya_uslug/master_na_chas._sborka_mebeli._i_lyubye_raboty_8328963584"
 };
 
@@ -523,7 +523,7 @@ function layout() {
 addEventListener("resize", () => { if (String(colCount()) !== gallery.dataset.cols) layout(); });
 
 function setFilter(f, push) {
-  filter = CATS[f] ? f : "all";
+  filter = Object.hasOwn(CATS, f) ? f : "all";
   $$(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.filter === filter));
   layout();
   if (push) history.replaceState(null, "", filter === "all" ? location.pathname : "#" + filter);
@@ -541,7 +541,7 @@ function render() {
     const b = document.createElement("button");
     b.className = "work" + (it.title ? "" : " noc");
     b.dataset.i = i; b.dataset.c = it.cat;
-    const ratio = it.w && it.h ? ` width="${it.w}" height="${it.h}"` : "";
+    const ratio = Number.isSafeInteger(it.w) && it.w > 0 && Number.isSafeInteger(it.h) && it.h > 0 ? ` width="${it.w}" height="${it.h}"` : "";
     b.innerHTML = `<figure><img src="${esc(it.thumb)}" alt="${esc(it.title || CATS[it.cat] || "Работа")}" loading="lazy"${ratio}>
       <figcaption>${esc(it.title)}${it.note ? `<small>${esc(it.note)}</small>` : ""}</figcaption></figure>`;
     return b;
@@ -553,7 +553,12 @@ function render() {
 
 fetch("works.json", {cache: "no-cache"})
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(d => { ITEMS = d.items || []; CATS = d.categories || {}; render(); })
+  .then(d => { CATS = Object.fromEntries(Object.entries(d.categories || {}).filter(([key]) => /^[a-z0-9_-]+$/.test(key)));
+    const photo = (path, folder) => typeof path === "string" &&
+      new RegExp("^" + folder + "/[a-z0-9_-]+/[a-z0-9_-]+[.]jpg$", "i").test(path);
+    ITEMS = (d.items || []).filter(it => it && Object.hasOwn(CATS, it.cat) &&
+      photo(it.file, "works") && photo(it.thumb, "thumbs"));
+    render(); })
   .catch(() => { state.innerHTML = 'Не удалось загрузить фото. Обновите страницу или вернитесь <a href="index.html">на главную</a>.'; });
 addEventListener("hashchange", () => setFilter(location.hash.slice(1), false));
 
