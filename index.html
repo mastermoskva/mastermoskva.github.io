@@ -394,6 +394,18 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
 .photo-quote{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin:0 0 24px}
 .photo-quote p{font-size:14px;color:var(--muted);margin:0}
 @media(max-width:640px){.photo-quote .btn{width:100%}.photo-quote p{width:100%;text-align:center}}
+
+.photo-dialog{position:fixed;inset:0;border:1px solid #ffffff20;max-width:440px;width:calc(100% - 32px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;padding:28px}
+body:has(.photo-dialog[open]){overflow:hidden}
+.photo-dialog::backdrop{background:rgba(12,12,13,.72);backdrop-filter:blur(4px)}
+.photo-dialog[open]{animation:fade .2s}
+.photo-dialog h3{line-height:1.25;margin-bottom:20px}
+.photo-dialog .direct{margin:0;display:grid;gap:8px}
+.photo-dialog .direct a{min-height:56px}
+.photo-dialog .direct a:focus-visible,.photo-dialog .x:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.photo-dialog .photo-arrow{margin-left:auto;color:var(--dark-muted);font-size:18px}
+@media(max-width:640px){.photo-dialog{padding:22px 16px 16px}.photo-dialog h3{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.photo-dialog[open]{animation:none}}
 </style>
 </head>
 <body>
@@ -453,7 +465,7 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
         <a class="btn btn-ghost" href="#works">Смотреть работы</a>
       </div>
       <div class="photo-quote">
-        <a class="btn btn-ghost" href="https://t.me/ilkjeli" target="_blank" rel="noopener">Оценить по фото <span aria-hidden="true">↗</span></a>
+        <button class="btn btn-ghost" type="button" id="photoQuoteTrigger" aria-haspopup="dialog" aria-controls="photoQuoteDialog">Оценить по фото <span aria-hidden="true">↗</span></button>
         <p>пришлите фото работы, пойму вас без слов!</p>
       </div>
       <div class="ratings">
@@ -742,6 +754,16 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
   <button class="btn btn-primary" data-open-order>Вызвать мастера</button>
 </div>
 
+<dialog class="modal-box photo-dialog" id="photoQuoteDialog" aria-labelledby="photoQuoteTitle">
+  <button class="x" type="button" aria-label="Закрыть" autofocus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <h3 id="photoQuoteTitle">Где вам удобно начать общение?</h3>
+  <div class="direct">
+    <a data-tg-link href="#" target="_blank" rel="noopener"><span class="di" style="background:rgba(42,171,238,.15)"><svg viewBox="0 0 24 24" fill="#2aabee"><path d="M21.9 4.3l-3.2 15c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13 1.8 11.5c-1-.3-1-1 .2-1.5L20.6 3c.8-.3 1.6.2 1.3 1.3z"/></svg></span><b>Telegram</b><span class="photo-arrow" aria-hidden="true">↗</span></a>
+    <a data-wa-link href="#" target="_blank" rel="noopener"><span class="di" style="background:rgba(37,211,102,.15)"><svg viewBox="0 0 24 24" fill="#25d366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.2-.7-2.7-1.1-4.4-3.8-4.5-4-.1-.2-1.1-1.4-1.1-2.7 0-1.3.7-1.9.9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1.9 2 1.2 2.3 1.4.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg></span><b>WhatsApp</b><span class="photo-arrow" aria-hidden="true">↗</span></a>
+    <a data-max-link href="#" target="_blank" rel="noopener"><span class="di" style="background:rgba(120,80,240,.15)"><img data-img="max_logo" alt="" style="width:24px;height:24px;border-radius:7px"></span><b>MAX</b><span class="photo-arrow" aria-hidden="true">↗</span></a>
+  </div>
+</dialog>
+
 <!-- окно заявки -->
 <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
   <div class="modal-box">
@@ -943,6 +965,28 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal(m);
   if (m === lb && e.key === "ArrowLeft") $(".lb-prev").click();
   if (m === lb && e.key === "ArrowRight") $(".lb-next").click();
+});
+
+/* ---------- выбор мессенджера для оценки по фото ---------- */
+const photoQuoteDialog = $("#photoQuoteDialog");
+const photoQuoteTrigger = $("#photoQuoteTrigger");
+photoQuoteTrigger.addEventListener("click", () => {
+  if (photoQuoteDialog.open) return;
+  photoQuoteDialog.showModal();
+});
+$(".x", photoQuoteDialog).addEventListener("click", () => photoQuoteDialog.close());
+photoQuoteDialog.addEventListener("click", event => {
+  if (event.target.closest("a")) {
+    photoQuoteDialog.close();
+    return;
+  }
+  if (event.target !== photoQuoteDialog) return;
+  const bounds = photoQuoteDialog.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom) photoQuoteDialog.close();
+});
+photoQuoteDialog.addEventListener("close", () => {
+  if (!photoQuoteDialog.open) photoQuoteTrigger.focus({preventScroll:true});
 });
 
 /* ---------- формы ---------- */
