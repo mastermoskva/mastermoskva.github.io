@@ -85,12 +85,19 @@ def main():
                 # новое фото: конвертируем и переименовываем
                 try:
                     img = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
-                except Exception as e:  # битый файл — пропускаем, но не падаем
+                except Exception as e:
+                    if src.name.startswith("upload-"):
+                        raise RuntimeError(f"Не удалось обработать фото из панели: {src.name}") from e
                     print(f"Не удалось открыть {src}: {e}")
                     continue
                 dst = cat_dir / f"{cat}-{next_number(cat_dir, cat):03d}.jpg"
                 save_jpeg(img, dst, FULL_SIZE, 82)
                 title = auto_title(src.stem)
+                source_rel = f"works/{cat}/{src.name}"
+                if source_rel in by_file:
+                    item = by_file.pop(source_rel)
+                    item["file"] = f"works/{cat}/{dst.name}"
+                    by_file[item["file"]] = item
                 src.unlink()
                 print(f"Новое фото: {src.name} → {dst.name}  «{title}»")
                 src = dst

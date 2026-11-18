@@ -54,7 +54,7 @@ jobs:
       - name: Собрать публичные файлы
         run: |
           mkdir -p "${{ runner.temp }}/public-site"
-          cp index.html works.html privacy.html consent.html works.json "${{ runner.temp }}/public-site/"
+          cp index.html works.html privacy.html consent.html works.json content.json "${{ runner.temp }}/public-site/"
           cp -R works thumbs "${{ runner.temp }}/public-site/"
 
       - name: Упаковать сайт

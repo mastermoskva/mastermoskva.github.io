@@ -390,6 +390,10 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
   .mbar .call{flex:0 0 50px;padding:0;background:var(--dark-2);color:#fff}
 }
 .consent-check{display:flex;gap:10px;align-items:flex-start;font-size:14px}.consent-check input{flex:none;margin-top:4px;accent-color:var(--accent)}.consent-check a{text-decoration:underline}
+.hero-cta{margin-bottom:12px}
+.photo-quote{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin:0 0 24px}
+.photo-quote p{font-size:14px;color:var(--muted);margin:0}
+@media(max-width:640px){.photo-quote .btn{width:100%}.photo-quote p{width:100%;text-align:center}}
 </style>
 </head>
 <body>
@@ -439,14 +443,18 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">Частный мастер с выездом</span>
-      <h1>Соберу, починю, повешу&nbsp;— <em>аккуратно</em> и&nbsp;без&nbsp;посредников</h1>
-      <p class="lead">Здравствуйте, я Илья 👋 Собираю мебель, делаю мелкий ремонт, электрику и монтаж по Москве и области. Свой инструмент, честная цена, которую согласуем до начала работы.</p>
+      <h1 data-content="heroTitle">Соберу, починю, повешу&nbsp;— <em>аккуратно</em> и&nbsp;без&nbsp;посредников</h1>
+      <p class="lead" data-content="heroIntro">Здравствуйте, я Илья 👋 Собираю мебель, делаю мелкий ремонт, электрику и монтаж по Москве и области. Свой инструмент, честная цена, которую согласуем до начала работы.</p>
       <div class="hero-cta">
         <button class="btn btn-primary" data-open-order>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           Вызвать мастера
         </button>
         <a class="btn btn-ghost" href="#works">Смотреть работы</a>
+      </div>
+      <div class="photo-quote">
+        <a class="btn btn-ghost" href="https://t.me/ilkjeli" target="_blank" rel="noopener">Оценить по фото <span aria-hidden="true">↗</span></a>
+        <p>пришлите фото работы, пойму вас без слов!</p>
       </div>
       <div class="ratings">
         <a class="rating" href="https://www.avito.ru/moskovskaya_oblast_moskovskiy/predlozheniya_uslug/master_na_chas._sborka_mebeli._i_lyubye_raboty_8328963584" target="_blank" rel="noopener">
@@ -504,12 +512,12 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
   <div class="wrap about">
     <div class="about-ph rv">
       <img data-img="me" alt="Илья — мастер на час">
-      <div class="about-tag"><b>Илья</b><span>частный мастер · Москва и МО</span></div>
+      <div class="about-tag"><b>Илья</b><span data-content="area">частный мастер · Москва и МО</span></div>
     </div>
     <div class="rv">
       <span class="eyebrow">Обо мне</span>
-      <h2>Приеду сам — без бригад и посредников</h2>
-      <blockquote>Здравствуйте! Меня зовут Илья. Работаю сам на себя, поэтому не навязываю лишних услуг и не накручиваю цену. Отношусь к вашему дому аккуратно и отвечаю за результат лично.</blockquote>
+      <h2 data-content="aboutTitle">Приеду сам — без бригад и посредников</h2>
+      <blockquote data-content="aboutText">Здравствуйте! Меня зовут Илья. Работаю сам на себя, поэтому не навязываю лишних услуг и не накручиваю цену. Отношусь к вашему дому аккуратно и отвечаю за результат лично.</blockquote>
       <ul class="about-list">
         <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Перед работой согласую цену и материалы</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Свой инструмент</li>
@@ -538,37 +546,37 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
       <article class="svc rv">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M12 3v18M9.5 11v2M14.5 11v2"/></svg></span>
         <h3>Сборка мебели</h3>
-        <ul><li>Шкафы, кровати, стеллажи, тумбы, комоды</li><li>Разборка и сборка при переезде</li><li>Ремонт мебели, регулировка фасадов</li><li>Навеска полок и шкафов</li></ul>
+        <ul data-service-copy="furniture"><li>Шкафы, кровати, стеллажи, тумбы, комоды</li><li>Разборка и сборка при переезде</li><li>Ремонт мебели, регулировка фасадов</li><li>Навеска полок и шкафов</li></ul>
         <button class="link" data-open-order="Сборка мебели">Заказать →</button>
       </article>
       <article class="svc rv">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span>
         <h3>Электрика</h3>
-        <ul><li>Замена розеток и выключателей</li><li>Установка люстр и светильников</li><li>Зеркала с подсветкой</li><li>Замена лампочек и мелкий электромонтаж</li></ul>
+        <ul data-service-copy="electrical"><li>Замена розеток и выключателей</li><li>Установка люстр и светильников</li><li>Зеркала с подсветкой</li><li>Замена лампочек и мелкий электромонтаж</li></ul>
         <button class="link" data-open-order="Электромонтажные работы">Заказать →</button>
       </article>
       <article class="svc rv">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg></span>
         <h3>Мелкий ремонт и монтаж</h3>
-        <ul><li>Карнизы, кронштейны ТВ, полки, зеркала</li><li>Душевые стойки, полотенцесушители</li><li>Ремонт и установка конструкций</li><li>Любые бытовые задачи по дому</li></ul>
+        <ul data-service-copy="repairs"><li>Карнизы, кронштейны ТВ, полки, зеркала</li><li>Душевые стойки, полотенцесушители</li><li>Ремонт и установка конструкций</li><li>Любые бытовые задачи по дому</li></ul>
         <button class="link" data-open-order="Мелкий ремонт / монтаж">Заказать →</button>
       </article>
       <article class="svc rv">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
         <h3>Компьютеры и интернет</h3>
-        <ul><li>Сборка и ремонт ПК, замена комплектующих</li><li>Установка и настройка Windows, программ</li><li>Настройка интернета и Wi-Fi</li><li>Помощь с рекламой на Авито</li></ul>
+        <ul data-service-copy="computers"><li>Сборка и ремонт ПК, замена комплектующих</li><li>Установка и настройка Windows, программ</li><li>Настройка интернета и Wi-Fi</li><li>Помощь с рекламой на Авито</li></ul>
         <button class="link" data-open-order="Компьютеры / интернет">Заказать →</button>
       </article>
       <article class="svc rv">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></span>
         <h3>Переезд, доставка, вывоз</h3>
-        <ul><li>Помощь с переездом, погрузка и разгрузка</li><li>Перевозка вещей, материалов, техники</li><li>Покупка и доставка материалов</li><li>Вынос и вывоз мусора</li></ul>
+        <ul data-service-copy="moving"><li>Помощь с переездом, погрузка и разгрузка</li><li>Перевозка вещей, материалов, техники</li><li>Покупка и доставка материалов</li><li>Вынос и вывоз мусора</li></ul>
         <button class="link" data-open-order="Переезд / доставка / вывоз">Заказать →</button>
       </article>
       <article class="svc rv">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M4.9 4.9l2.8 2.8M2 12h4M19.1 4.9l-2.8 2.8M22 12h-4"/><path d="M8 22l4-10 4 10"/></svg></span>
         <h3>Сварочные работы</h3>
-        <ul><li>Металлоконструкции</li><li>Ремонт металлических изделий</li><li>Мелкая сварка на объекте</li></ul>
+        <ul data-service-copy="welding"><li>Металлоконструкции</li><li>Ремонт металлических изделий</li><li>Мелкая сварка на объекте</li></ul>
         <button class="link" data-open-order="Сварочные работы">Заказать →</button>
       </article>
       <article class="svc wide rv">
@@ -844,6 +852,23 @@ $$("[data-max-link]").forEach(a => { if (CONFIG.max) a.href = CONFIG.max; else a
 $("#year").textContent = new Date().getFullYear();
 $$("img[data-img]").forEach(i => i.src = IMG[i.dataset.img]);
 
+/* ---------- тексты из панели управления ---------- */
+fetch("content.json", {cache:"no-cache"})
+  .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+  .then(content => {
+    $$("[data-content]").forEach(el => {
+      const value = content[el.dataset.content];
+      if (typeof value === "string" && value.trim() && value !== el.textContent.trim()) el.textContent = value;
+    });
+    $$("[data-service-copy]").forEach(el => {
+      const value = content[el.dataset.serviceCopy];
+      if (typeof value !== "string" || !value.trim()) return;
+      const rows = value.split(/\r?\n/).filter(line => line.trim());
+      el.replaceChildren(...rows.map(line => { const li = document.createElement("li"); li.textContent = line.trim(); return li; }));
+    });
+  })
+  .catch(() => { /* Встроенный текст доступен и без JSON. */ });
+
 /* ---------- категории работ (данные — из works.json, его обновляет GitHub сам) ---------- */
 const CAT_FALLBACK = {mebel:["foto_11","foto_01","foto_12"], vannaya:["foto_13","foto_06","foto_19"], montazh:["foto_07","foto_03","foto_05"]};
 const plural = (n, one, few, many) => n % 10 === 1 && n % 100 !== 11 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? few : many;
@@ -861,8 +886,8 @@ function fillCats(get) {
 fetch("works.json", {cache: "no-cache"})
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(d => {
-    const items = d.items || [];
-    fillCats(cat => { const list = items.filter(it => it.cat === cat); return {imgs: list.slice(0, 3).map(it => it.thumb), count: list.length}; });
+    const items = (d.items || []).filter(item => item && !item.hidden && /^thumbs\/[a-z]+\/[a-z0-9_-]+\.jpg$/i.test(item.thumb));
+    fillCats(cat => { const list = items.filter(it => it.cat === cat).sort((a,b) => Number(!!b.cover)-Number(!!a.cover)); return {imgs: list.slice(0, 3).map(it => it.thumb), count: list.length}; });
     $("#allWorksBtn").firstChild.textContent = `Смотреть все работы (${items.length})`;
   })
   .catch(() => fillCats(cat => ({imgs: CAT_FALLBACK[cat].map(k => IMG[k]), count: null})));

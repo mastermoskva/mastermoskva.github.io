@@ -388,6 +388,10 @@ h2{font-size:clamp(26px,3.6vw,40px);margin:12px 0 14px}
   .mbar .call{flex:0 0 50px;padding:0;background:var(--dark-2);color:#fff}
 }
 .consent-check{display:flex;gap:10px;align-items:flex-start;font-size:14px}.consent-check input{flex:none;margin-top:4px;accent-color:var(--accent)}.consent-check a{text-decoration:underline}
+.hero-cta{margin-bottom:12px}
+.photo-quote{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin:0 0 24px}
+.photo-quote p{font-size:14px;color:var(--muted);margin:0}
+@media(max-width:640px){.photo-quote .btn{width:100%}.photo-quote p{width:100%;text-align:center}}
 
 /* страница всех работ */
 .wp-hero{padding:40px 0 28px}
@@ -556,7 +560,7 @@ fetch("works.json", {cache: "no-cache"})
   .then(d => { CATS = Object.fromEntries(Object.entries(d.categories || {}).filter(([key]) => /^[a-z0-9_-]+$/.test(key)));
     const photo = (path, folder) => typeof path === "string" &&
       new RegExp("^" + folder + "/[a-z0-9_-]+/[a-z0-9_-]+[.]jpg$", "i").test(path);
-    ITEMS = (d.items || []).filter(it => it && Object.hasOwn(CATS, it.cat) &&
+    ITEMS = (d.items || []).filter(it => it && !it.hidden && Object.hasOwn(CATS, it.cat) &&
       photo(it.file, "works") && photo(it.thumb, "thumbs"));
     render(); })
   .catch(() => { state.innerHTML = 'Не удалось загрузить фото. Обновите страницу или вернитесь <a href="index.html">на главную</a>.'; });
